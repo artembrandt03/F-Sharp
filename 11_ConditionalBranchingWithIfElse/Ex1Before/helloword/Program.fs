@@ -2,6 +2,8 @@
 
 [<EntryPoint>]
 let main argv =
-    let person = argv.[0]
+    let mutable person = "Anonymous Person"
+    if argv.Length > 0 then
+        person <- argv.[0]
     printfn "Hello %s from my F# program!" person
     0
