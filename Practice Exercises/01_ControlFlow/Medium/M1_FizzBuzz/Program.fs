@@ -21,18 +21,51 @@
 //  Run:  dotnet run
 // =====================================================================
 
+// ----------------------- grading -----------------------
+// Result: 8 / 8 tests PASS - both bugs found and fixed.
+//
+// The original code, for reference:
+//
+//   if n % 3 = 0 then "Fizz"              <- BUG 1: 15 is divisible by 3, so it
+//   elif n % 5 = 0 then "Buzz"               stops here as "Fizz". The
+//   elif n % 15 = 0 then "FizzBuzz"          "FizzBuzz" branch could never run.
+//   else string n
+//
+//   for i in 1..upTo-1 do                 <- BUG 2: `1..upTo-1` stops one early,
+//                                            so upTo itself is never checked
+//                                            (count up to 15 gave 0).
+//
+// Your version is left in place below, with notes.
+
+// ----------------------- your solution -----------------------
 let fizzBuzz (n: int) =
-    if n % 3 = 0 then "Fizz"
-    elif n % 5 = 0 then "Buzz"
-    elif n % 15 = 0 then "FizzBuzz"
-    else string n
+    if n % 3 = 0 && n % 5 = 0 then "FizzBuzz"  // FIX 1: GOOD. The most specific
+    elif n % 3 = 0 then "Fizz"                 //   case goes FIRST. In an if/elif
+    elif n % 5 = 0 then "Buzz"                 //   chain the first true branch
+    else string n                              //   wins, and the rest are skipped.
+    // GOOD: you also removed the old `n % 15 = 0` line instead of leaving it
+    //   as dead code. `&&` ("and") is new, and it's a clear way to say
+    //   "divisible by both". `n % 15 = 0` would work the same.
 
 let countFizzBuzzes (upTo: int) =
     let mutable count = 0
-    for i in 1..upTo-1 do
+    for i in 1..upTo do               // FIX 2: GOOD. In F# `a..b` already
+                                      //   INCLUDES b, so no `-1` is needed.
+                                      //   (`0..argv.Length-1` in lesson 13 needed -1
+                                      //   only because indexes stop at Length-1.)
         if fizzBuzz i = "FizzBuzz" then
             count <- count + 1
     count
+
+// STYLE (optional): `fizzBuzz i = "FizzBuzz"` works, but it depends on the
+//   exact text. A typo like "FizzBuz" would quietly give 0. Checking the
+//   number directly doesn't depend on any strings:
+//
+//         if i % 15 = 0 then
+//             count <- count + 1
+//
+//   Reusing `fizzBuzz` like you did is also a fine choice, since the rule
+//   stays in one place. Either is OK.
 
 
 // ----------------------- tests (don't edit) -----------------------
