@@ -26,10 +26,30 @@
 //  Run:  dotnet run
 // =====================================================================
 
-let describe (n: int) =
-    // TODO: replace "" with an if / elif / else expression
-    ""
+// ----------------------- grading -----------------------
+// Result: 5 / 5 tests PASS - correct, nothing to fix.
+//
+// Your version is left in place below, with notes on each line.
 
+// ----------------------- your solution -----------------------
+let describe (n: int) =
+    if n = 0 then        // GOOD: zero is checked FIRST. 0 % 2 = 0, so if the
+        "zero"           //   "even" check came first, describe 0 would be "even".
+    else if n % 2 = 0 then  // GOOD: testing `= 0`, not `= 1`. -3 % 2 is -1,
+        "even"              //   so `n % 2 = 1` would call -3 even. `= 0` works
+    else                    //   for negatives too, and `else` catches all odds.
+        "odd"
+    // GOOD: if/else is used as an EXPRESSION. Every branch returns a string,
+    //   with no `mutable` and no `printfn` inside the function.
+
+// STYLE (optional): `else if` works, but F# usually writes `elif`.
+//   They do the same thing. With `else if`, the second `if` is technically
+//   nested inside the first `else`; `elif` keeps a long chain flat:
+//
+// let describe (n: int) =
+//     if n = 0 then "zero"
+//     elif n % 2 = 0 then "even"
+//     else "odd"
 
 // ----------------------- tests (don't edit) -----------------------
 let check (testName: string) expected actual =

@@ -24,12 +24,47 @@
 //        dotnet run Ann Christopher Bob Maria   -> also counts YOUR names
 // =====================================================================
 
+// ----------------------- grading -----------------------
+// Result: 5 / 5 tests PASS - correct, nothing to fix.
+//   `dotnet run Ann Christopher Bob Maria` -> "2 of your 4 names have 5+ letters"
+//
+// Your version is left in place below, with notes on each line.
+
+// ----------------------- your solution -----------------------
 let countLongNames (names: string[]) (minLength: int) =
-    // TODO 1: create a mutable counter starting at 0
-    // TODO 2: loop over every name
-    // TODO 3: if the name is long enough, add 1 to the counter
-    // TODO 4: return the counter (replace the 0 below)
-    0
+    //1: create a mutable counter starting at 0
+    let mutable counter = 0           // GOOD: `let mutable` is needed because the
+                                      //   value changes as the loop runs.
+    //2: loop over every name
+    for name in names do              // GOOD: `for ... in` instead of indexes
+                                      //   (0..names.Length-1), so no off-by-one risk.
+    //3: if the name is long enough, add 1 to the counter
+        if name.Length >= minLength then  // GOOD: `>=`, not `>`. "AT LEAST that
+                                          //   long" includes the exact length, which
+                                          //   the "exact length counts" test checks.
+            counter <- counter + 1    // GOOD: `<-` updates the mutable. An `if` with
+                                      //   no `else` is fine because it returns nothing.
+    //4: return the counter (replace the 0 below)
+    counter                           // GOOD: the last line is the return value,
+                                      //   back at the function's indentation (after
+                                      //   the loop, not inside it).
+
+// STYLE (optional): comment `//3` sits at the same column as `for`, so it
+//   looks like it's outside the loop. The compiler ignores comment
+//   indentation, but indenting it with the code it describes is easier to
+//   read:
+//
+//     for name in names do
+//         // 3: if the name is long enough, add 1 to the counter
+//         if name.Length >= minLength then
+//
+// PREVIEW (lessons 15 + 17, don't worry about it yet): later you'll be able
+//   to write the same thing with no mutable and no loop:
+//
+// let countLongNames (names: string[]) (minLength: int) =
+//     names
+//     |> Array.filter (fun name -> name.Length >= minLength)
+//     |> Array.length
 
 
 // ----------------------- tests (don't edit) -----------------------
