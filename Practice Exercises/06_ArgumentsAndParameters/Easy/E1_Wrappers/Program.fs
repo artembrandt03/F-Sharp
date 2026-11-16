@@ -27,20 +27,41 @@
 //  Run:  dotnet run
 // =====================================================================
 
+// ----------------------- grading -----------------------
+// Result: 6 / 6 tests PASS. All 3 bugs fixed.
+//
+//   [x] firstWord   added `(s : string)`              (compile error)
+//   [x] brackets    wrap "]" "[" -> wrap "[" "]"       (argument order)
+//   [x] prefixWith  swapped to (prefix) (s)            (parameter order)
+//
+// Your version is left in place below, with notes.
+
+// ----------------------- your solution -----------------------
 let wrap (left : string) (right : string) (s : string) =
     left + s + right
 
-let parens = wrap "(" ")"
-let brackets = wrap "]" "["
+let parens = wrap "(" ")"      // partial application: wrap with 2 of its 3 args,
+let brackets = wrap "[" "]"    //   so `brackets` is a function still waiting for s.
+                               // FIX 2: GOOD. left comes first, then right.
 
-let prefixWith (s : string) (prefix : string) =
-    prefix + s
+let prefixWith (prefix : string) (s : string) =   // FIX 3: GOOD, and the right
+    prefix + s                                    //   way to fix it. You swapped
+                                                  //   the PARAMETERS, not the
+let addTag = prefixWith "[TAG] "                  //   callers.
+    // WHY IT MATTERS: partial application always fills parameters from the
+    //   LEFT. Before, `prefixWith "[TAG] "` filled `s`, so "[TAG] " was
+    //   treated as the text and "hello" as the prefix -> "hello[TAG] ".
+    //   With the "setting" (prefix) first and the data (s) last, the same
+    //   line means what it says, and so does
+    //   `Array.map (prefixWith "> ")`, where Array.map supplies each s.
+    //   RULE OF THUMB: settings first, data last.
 
-let addTag = prefixWith "[TAG] "
-
-let firstWord s =
-    let words = s.Split(' ')
-    words.[0]
+let firstWord (s : string) =   // FIX 1: GOOD. Without `: string`, F# doesn't
+    let words = s.Split(' ')   //   know what `s` is yet, so it can't look up
+    words.[0]                  //   `.Split` ("indeterminate type"). Same fix as
+                               //   namePart in lesson 23. Whenever you call a
+                               //   method after a dot (`s.Split`, `s.Trim`)
+                               //   on a parameter, annotate that parameter.
 
 
 // ----------------------- tests (don't edit) -----------------------
