@@ -9,7 +9,7 @@ module Float =
         else
             Some (float s)
 
-    let fromStringOr d s =
+    let fromStringOr (d, s) =
         s
         |> tryFromString
         |> Option.defaultValue d    
@@ -26,21 +26,20 @@ type Student =
 
 module Student =
 
-    let namePart i s =
+    let namePart i (s : String) =
         let elements = s.Split(',')
         elements.[i].Trim()
 
     let fromString (s : string) =
         let elements = s.Split('\t')
         let name = elements.[0]
-        // TODO: Inefficient, splits a string twice.
         let given = namePart 1 name
         let sur = namePart 0 name
         let id = elements.[1]    
         let scores =
             elements
             |> Array.skip 2
-            |> Array.map (Float.fromStringOr 50.0)
+            |> Array.map (fun s -> Float.fromStringOr(50.0, s))
         let meanScore = scores |> Array.average
         let minScore = scores |> Array.min
         let maxScore = scores |> Array.max

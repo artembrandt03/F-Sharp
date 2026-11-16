@@ -3,8 +3,8 @@
 let quote symbol s =
     sprintf "%c%s%c" symbol s symbol
  
-let singleQuote = // TODO
-let doubleQuote = // TODO
+let singleQuote = quote '\''
+let doubleQuote = quote '"'
  
 [<EntryPoint>]
 let main argv =
