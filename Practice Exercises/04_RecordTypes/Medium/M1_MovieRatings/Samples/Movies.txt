@@ -1,0 +1,5 @@
+Title	Year	Ratings...
+Inception	2010	9.0	8.0	9.5	7.5
+Casablanca	1942	9.0	9.5	8.5
+Cats	2019	2.0	3.0
+Jaws	1975	8.0	7.0	7.5	7.5
