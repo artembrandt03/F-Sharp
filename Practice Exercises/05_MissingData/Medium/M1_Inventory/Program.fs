@@ -64,41 +64,130 @@ type Item =
         Stock : int
     }
 
+// ----------------------- grading -----------------------
+// You did 1-5 and asked me to finish, so this is part GRADE, part WALKTHROUGH.
+// As written it DIDN'T COMPILE, because of typos in 5 (and a type error in 4
+//   that would have shown up next). With the fixes and 6-8 below: 18 / 18.
+//
+//   [x] 1 tryFloat       correct
+//   [x] 2 tryInt         correct
+//   [x] 3 intOr          correct (one tiny style note)
+//   [ ] 4 fromString     Array.skip gives an ARRAY, not one column   (fixed below)
+//   [ ] 5 priceText      right idea, 2 typos                         (fixed below)
+//   [-] 6 knownPrices    not started                                 (written below)
+//   [-] 7 countUnpriced  not started                                 (written below)
+//   [-] 8 report         not started                                 (written below)
+
+// ----------------------- your solution (1-3) -----------------------
 module Parse =
 
     let tryFloat (s : string) : float option =
-        // TODO 1
-        None
+        if s = "N/A" || s = "" then       // GOOD: two missing markers with `||`.
+            None                          //   ("" is a blank cell: "Thing\t\t7"
+        else                              //   splits into "Thing", "", "7".)
+            Some (float s)
 
     let tryInt (s : string) : int option =
-        // TODO 2
-        None
+        if s = "?" then                   // GOOD: same shape, `int` instead of `float`.
+            None
+        else
+            Some (int s)
 
     let intOr (d : int) (s : string) : int =
-        // TODO 3
-        0
+        s
+        |> tryInt
+        |> Option.defaultValue d          // GOOD: uses `d` this time (the E1 lesson stuck!)
+        // STYLE: you had `Option. defaultValue` with a space after the dot.
+        //   F# happens to accept it, but write `Option.defaultValue`
+        //   with no space; that's how everyone will expect to read it.
 
 module Item =
 
+    // ---- your attempt (4) ----
+    //     let fromString (row : string) : Item =
+    //         let elements = row.Split('\t')
+    //         let product = elements.[0]
+    //         let price =
+    //             elements
+    //             |> Array.skip 1
+    //             |> Parse.tryFloat
+    //         let stock =
+    //             elements
+    //             |> Array.skip 2
+    //             |> Parse.intOr 0
+    //         { Name = product; Price = price; Stock = stock }
+    //
+    //  GOOD: one `let` per field, then the record LAST. Clean shape.
+    //  * `Array.skip 1` doesn't GET column 1. It returns everything AFTER
+    //    the first item, which is still an ARRAY:
+    //        [| "Widget"; "4.50"; "10" |] |> Array.skip 1  =  [| "4.50"; "10" |]
+    //    Parse.tryFloat wants ONE string, so this is a type error
+    //    ("expected string but here has type string[]").
+    //    To get a single column, index it: elements.[1].
+    //    (In the lessons, skip 2 was used because ALL the remaining
+    //    columns were scores. Here each column is a different thing.)
+
+    // ---- fixed (4) ----
     let fromString (row : string) : Item =
-        // TODO 4
-        { Name = ""; Price = None; Stock = 0 }
+        let elements = row.Split('\t')
+        let product = elements.[0]
+        let price = elements.[1] |> Parse.tryFloat    // one cell -> float option
+        let stock = elements.[2] |> Parse.intOr 0     // one cell -> int (0 if "?")
+        {
+            Name = product
+            Price = price
+            Stock = stock
+        }
 
+    // ---- your attempt (5) ----
+    //     let priceText (item : Item) : string =
+    //         item.Price
+    //         |> Option.map (fun price -> sprintf "$%0.2f")
+    //         |> Option.default value "price unknown"
+    //
+    //  GOOD: exactly the right pipeline: map the Some into text, then
+    //    fill in the None. Two typos stopped it:
+    //  * `sprintf "$%0.2f"` has a %-slot but no value after it, so `price`
+    //    is never used. sprintf then gives back a function still WAITING
+    //    for the number, not a string. Needs `sprintf "$%0.2f" price`.
+    //  * `Option.default value` should be `Option.defaultValue`, one word.
+    //    That's the compile error you saw: "Unexpected keyword 'default'".
+
+    // ---- fixed (5) ----
     let priceText (item : Item) : string =
-        // TODO 5
-        ""
+        item.Price                                              // Some 4.5   | None
+        |> Option.map (fun price -> sprintf "$%0.2f" price)     // Some "$4.50" | None
+        |> Option.defaultValue "price unknown"                  // "$4.50"    | "price unknown"
 
+// ----------------------- written for you (6-8) -----------------------
+
+// 6. The prices we DO know.
 let knownPrices (items : Item[]) : float[] =
-    // TODO 6
-    [||]
+    items
+    |> Array.choose (fun item -> item.Price)
+    // Array.choose wants a function that returns an OPTION, and item.Price
+    //   already IS one. So "give me each item's Price" is all it needs:
+    //   Somes are unwrapped and kept, Nones are dropped.
+    //   [| widget; gizmo; doodad; thing |] -> [| 4.5; 12.0 |]
 
+// 7. How many items have no price.
 let countUnpriced (items : Item[]) : int =
-    // TODO 7
-    0
+    items
+    |> Array.filter (fun item -> Option.isNone item.Price)   // keep the unpriced ones
+    |> Array.length                                          // count them
+    // Same as E1's `= None` check, written with Option.isNone.
+    // Another way: (items |> Array.length) - (knownPrices items |> Array.length)
 
+// 8. One line of text per item.
 let report (rows : string[]) : string[] =
-    // TODO 8
-    [||]
+    rows
+    |> Array.skip 1                     // drop the header
+    |> Array.map Item.fromString        // string[] -> Item[]
+    |> Array.map (fun item ->           // Item[]   -> string[]
+        sprintf "%s: %s, stock %i" item.Name (Item.priceText item) item.Stock)
+    // `(Item.priceText item)` needs brackets so F# passes its RESULT to
+    //   sprintf, instead of passing `Item.priceText` and `item` as two
+    //   separate arguments.
 
 
 // ----------------------- tests (don't edit) -----------------------
