@@ -5,11 +5,14 @@ let printMeanScore (row : string) =
     let elements = row.Split('\t')
     let name = elements.[0]
     let id = elements.[1]
-    let meanScore =
+    let scores = 
         elements
         |> Array.skip 2
-        |> Array.averageBy float
-    printfn "%s\t%s\t%0.1f" name id meanScore
+        |> Array.map float
+    let meanScore = scores |> Array.average
+    let minScore = scores |> Array.min
+    let maxScore = scores |> Array.max
+    printfn "%s\t%s\t%0.1f\t%0.1f\t%0.1f" name id meanScore minScore maxScore
 
 let summarize filePath = 
     let rows = File.ReadAllLines filePath
@@ -28,8 +31,9 @@ let main argv =
             summarize filePath
             0
         else
-            printfn "File not found: %s" filePath
-            2
+           printfn "Incorrect file path! %s" filePath
+           2 
+           
     else
-        printfn "Please specify a file."
-        1
+        printfn "Specify a file please!"
+        1 
