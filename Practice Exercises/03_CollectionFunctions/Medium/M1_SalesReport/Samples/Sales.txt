@@ -1,0 +1,5 @@
+Product	Region	Q1	Q2	Q3	Q4
+Widget	North	120.5	98.0	143.5	110.0
+Gadget	South	50.0	75.5	60.0	90.5
+Doohickey	East	10.0	10.0	10.0	10.0
+Thingamajig	West	200.0	180.5	220.0	199.5
