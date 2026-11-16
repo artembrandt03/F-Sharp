@@ -37,21 +37,74 @@ open System
 let isValid (name: string) =
     String.IsNullOrWhiteSpace name |> not
 
-let isBanned (name: string) =
-    // TODO (Part A): replace `false`
-    false
+// ----------------------- grading -----------------------
+// Result: 9 / 13 tests PASS. Parts B, C and D are correct. Part A
+//   (`isBanned`) has a logic bug, and the 4 failing tests all come from it.
+//   With the fix below: 13 / 13.
+//
+//   [ ] Part A  isBanned      `<>` should be `=`        (fixed below)
+//   [x] Part B  isNotBanned   correct, after fixing `name isBanned` -> `isBanned name`
+//   [x] Part C  admitted      correct
+//   [x] Part D  announcement  correct
+//
+// ----------------------- your attempt (Part A) -----------------------
+// let isBanned (name: string) =
+//     if name.ToLower() <> "eve" || name.ToLower() <> "mallory" then
+//         true
+//     else
+//         false
+//     // was just
+//     // name.ToLower() <> "eve" || name.ToLower() <> "mallory"
+//     // before, added if else to attempt to fix the fails but it didn't help
+//
+// What went wrong:
+//
+//  1. `<>` asks the OPPOSITE question. `isBanned` should ask "is it eve OR
+//     is it mallory?", which is `=` ... `||` ... `=`. Asking "is it NOT eve OR
+//     NOT mallory?" is true for EVERY name, because no name can be both
+//     at once:
+//
+//       name      <> "eve"   <> "mallory"   || (either true?)
+//       "Alice"   true       true           true   <- banned?!
+//       "eve"     false      true           true
+//       "mallory" true       false          true
+//
+//     That's why the Eve/Mallory tests passed (by luck: they're always true)
+//     and every normal name failed, and why `admitted` let nobody in.
+//
+//  2. Why the if/else didn't help: `if cond then true else false` always
+//     gives the same answer as `cond` alone. It just repeats the condition,
+//     so the bug was still inside `cond`. Your original one-line version
+//     was the better shape: a condition already IS a true/false value.
+//
+//  TIP: when a bool function is wrong, check it by hand on one name that
+//     should be true and one that should be false, like the table above.
 
+// ----------------------- fixed version (Part A) -----------------------
+let isBanned (name: string) =
+    let lower = name.ToLower()                // lower-case it ONCE, then reuse it
+    lower = "eve" || lower = "mallory"        // "is it eve OR is it mallory?"
+    //   "Alice" -> false || false = false    (not banned)
+    //   "EVE"   -> true  || false = true     (banned)
+    //   "Evelyn"-> false || false = false    (= is an exact match, so not banned)
+
+// ----------------------- your solution (Parts B-D) -----------------------
 let isNotBanned (name: string) =
-    // TODO (Part B): replace `true`
-    true
+    isBanned name |> not          // GOOD: function first, then the argument.
+                                  //   Same shape as `isValid` above.
 
 let admitted (names: string[]) =
-    // TODO (Part C): replace `names` with a pipeline
-    names
+    names                         // GOOD: a clean pipeline, reusing your two
+    |> Array.filter isValid       //   bool functions by name. It was right all
+    |> Array.filter isNotBanned   //   along; it only looked broken because
+                                  //   isNotBanned got the wrong answers from isBanned.
 
 let announcement (name: string) =
-    // TODO (Part D): replace ""
-    ""
+    if name.Length > 6 then           // GOOD: `>` not `>=`, so exactly 6 letters
+        sprintf "VIP: %s" name        //   ("Robert") stays a Guest, as the spec says.
+    else                              // GOOD: if/else as an expression; both
+        sprintf "Guest: %s" name      //   branches return a string.
+    // GOOD: `sprintf` from E1 of 01_ControlFlow. `"VIP: " + name` would work too.
 
 
 // ----------------------- tests (don't edit) -----------------------
