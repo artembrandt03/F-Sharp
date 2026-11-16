@@ -1,0 +1,8 @@
+Method	Detail
+Cash	12.50
+Card	20.00
+Voucher	SAVE10
+Unpaid	
+Cash	7.50
+Refund	5.00
+Card	40.00
