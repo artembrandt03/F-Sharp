@@ -1,3 +1,5 @@
+namespace Weather   // FIX 2: GOOD. Same namespace as Temperature.fs, so no `open` needed here.
+
 module Report =
 
     let line (celsius : float) =

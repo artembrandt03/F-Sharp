@@ -6,8 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Report.fs" />
+    <!-- FIX 1: GOOD. Compile order = dependency order: Temperature <- Report <- Program -->
     <Compile Include="Temperature.fs" />
+    <Compile Include="Report.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
