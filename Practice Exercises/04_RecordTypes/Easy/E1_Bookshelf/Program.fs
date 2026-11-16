@@ -40,23 +40,49 @@ type Book =
         Pages : int
     }
 
+// ----------------------- grading -----------------------
+// Result: 5 / 5 tests PASS. All 4 bugs found and fixed.
+//
+//   [x] fromString   Title/Author indexes swapped (1 and 0)  -> 0 and 1
+//   [x] fromString   Pages = elements.[2]                    -> elements.[3]
+//   [x] describe     (%i) printed book.Pages                 -> book.Year
+//   [x] oldestFirst  sortBy book.Pages                       -> book.Year
+//
+// THE LESSON IN THESE BUGS: all 4 compiled fine. The compiler checks
+//   TYPES, not MEANING. Title and Author are both strings, and Year and
+//   Pages are both ints, so mixing them up within the same type is
+//   invisible to F#. Only tests (or careful reading) catch it.
+//   Field NAMES help: `Pages = elements.[2]` reads wrong once you know
+//   column 2 is the year.
+//
+// Your version is left in place below, with notes.
+
+// ----------------------- your solution -----------------------
 module Book =
 
     let fromString (row : string) =
         let elements = row.Split('\t')
         {
-            Title = elements.[1]
-            Author = elements.[0]
-            Year = int elements.[2]
-            Pages = int elements.[2]
+            Title = elements.[0]          // FIX 1: GOOD. Columns: 0 Title,
+            Author = elements.[1]         //   1 Author, 2 Year, 3 Pages.
+            Year = int elements.[2]       //   `int` turns "1965" into 1965
+            Pages = int elements.[3]      // FIX 2: GOOD. Pages is the LAST column.
         }
+        // GOOD: the record is the last expression, so it's what
+        //   fromString returns. Same shape as Student.fromString.
 
     let describe (book : Book) =
-        sprintf "%s by %s (%i), %i pages" book.Title book.Author book.Pages book.Pages
+        sprintf "%s by %s (%i), %i pages" book.Title book.Author book.Year book.Pages
+        // FIX 3: GOOD. Each %-slot is filled in order by the values after
+        //   the format string, so the 3rd value lands in "(%i)".
+        //   Reading them in order against the expected text catches this.
 
 let oldestFirst (books : Book[]) =
     books
-    |> Array.sortBy (fun book -> book.Pages)
+    |> Array.sortBy (fun book -> book.Year)
+    // FIX 4: GOOD. `fun book -> book.Year` is a small throwaway function:
+    //   "given a book, give back its Year". Array.sortBy calls it on every
+    //   book and sorts by the answers, smallest first.
 
 
 // ----------------------- tests (don't edit) -----------------------
