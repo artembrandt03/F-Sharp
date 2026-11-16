@@ -1,4 +1,4 @@
-// =====================================================================
+﻿// =====================================================================
 //  MEDIUM 1 - Sales Report                                 (lesson 17)
 //  Type: WRITE THE FUNCTIONS - 6 small functions, ~15 lines in total.
 // =====================================================================
@@ -49,29 +49,118 @@
 
 open System.IO
 
+// ----------------------- grading -----------------------
+// Result: DIDN'T COMPILE (0 / 10). The plan was right (good reuse of your
+//   own functions), but 4 of the 6 functions had problems. With the fixes
+//   below: 10 / 10.
+//
+//   [ ] 1 productLine   no sprintf, and the function ends on a `let`
+//   [ ] 2 quarterSales  pipeline not indented under `let quarters =`
+//   [x] 3 yearTotal     correct
+//   [x] 4 bestQuarter   correct
+//   [ ] 5 summaryLine   `|` instead of `|>`, and wrong output format
+//   [ ] 6 report        never maps rows to summary lines
+//
+// THE BIG ONE (functions 1, 2 and 6): a function returns its LAST
+//   EXPRESSION. A `let` only names something for the lines AFTER it, so a
+//   function can't end on a `let` (same error as M2_SumOfEvens in
+//   01_ControlFlow). After your `let`s, the last line must be the value
+//   you want to give back.
+
+// ----------------------- your attempt (1) -----------------------
+// let productLine (row: string) : string =
+//     let elements = row.Split('\t')
+//     let product = elements.[0]
+//     let region = "(%s)" elements.[1]
+//
+//  * `"(%s)" elements.[1]`: a format string does nothing by itself. It
+//    needs `sprintf` in front: `sprintf "(%s)" elements.[1]`. Without it,
+//    F# tries to call the string "(%s)" like a function.
+//  * The function ENDS on `let region = ...`, so it never returns anything.
+//    You built the pieces and then didn't put them together.
+
+// ----------------------- fixed (1) -----------------------
 let productLine (row: string) : string =
-    // TODO 1
-    ""
+    let elements = row.Split('\t')
+    let product = elements.[0]
+    let region = elements.[1]
+    sprintf "%s (%s)" product region      // last line = the result
 
+// ----------------------- your attempt (2) -----------------------
+// let quarterSales (row: string) : float[] =
+//     let elements = row.Split('\t')
+//     let quarters =
+//     elements
+//     |> Array.skip 2
+//     |> Array.map float
+//
+//  * The pipeline is at the SAME indentation as `let quarters =`, so F#
+//    thinks `let quarters =` has nothing after it ("offside" error).
+//    Whatever belongs to a `let` must be indented further than the `let`.
+//  * Even indented, the function would end on the `let`. You'd need a
+//    last line `quarters`. Simpler: drop the `let` and let the pipeline
+//    BE the result. `Array.skip 2` was right (product AND region).
+
+// ----------------------- fixed (2) -----------------------
 let quarterSales (row: string) : float[] =
-    // TODO 2
-    [||]
+    row.Split('\t')
+    |> Array.skip 2                       // skip product + region
+    |> Array.map float                    // the pipeline IS the result
 
+// ----------------------- your solution (3 + 4) -----------------------
 let yearTotal (row: string) : float =
-    // TODO 3
-    0.0
+    quarterSales row |> Array.sum         // GOOD: reuses quarterSales
 
 let bestQuarter (row: string) : float =
-    // TODO 4
-    0.0
+    quarterSales row |> Array.max         // GOOD: reuses quarterSales
 
+// ----------------------- your attempt (5) -----------------------
+// let summaryLine (row: string) : string =
+//     let product = productLine row
+//     let total = yearTotal row
+//     let best = bestQuarter row
+//     let average = quarterSales row | Array.average
+//     sprintf "product %s\ttotal %f\tbest %f\taverage %f" product total best average
+//
+//  GOOD: one `let` per piece, then sprintf as the last line. That's the
+//    right shape, and reusing your functions is exactly what was asked.
+//  * `|` is a typo for `|>`. A single `|` means something else in F#
+//    (pattern matching, later), so it's a syntax error here.
+//  * The format must match the spec EXACTLY:
+//      expected: "Widget (North): total 472.0, best 143.5, average 118.0"
+//      yours:    "product Widget (North)\ttotal 472.000000\tbest ..."
+//    - no "product " at the start, and ": " after the name
+//    - ", " between parts, not \t (tab)
+//    - `%f` prints 6 decimal places; `%0.1f` prints 1
+
+// ----------------------- fixed (5) -----------------------
 let summaryLine (row: string) : string =
-    // TODO 5
-    ""
+    let product = productLine row
+    let total = yearTotal row
+    let best = bestQuarter row
+    let average = quarterSales row |> Array.average
+    sprintf "%s: total %0.1f, best %0.1f, average %0.1f" product total best average
 
+// ----------------------- your attempt (6) -----------------------
+// let report (rows: string[]) : string[] =
+//     rows
+//     |> Array.skip 1
+//     sprintf "%s" rows
+//
+//  * Skipping the header was right, but nothing turns each row into a
+//    summary line. That's `Array.map summaryLine`: "apply summaryLine to
+//    every row" (like `Array.map float` applies float to every item).
+//  * `sprintf "%s" rows` starts a NEW line that ignores the pipeline above
+//    it, uses the ORIGINAL `rows`, and `%s` expects ONE string, not an
+//    array. The pipeline's result should be the function's last
+//    expression, with no extra line after it.
+
+// ----------------------- fixed (6) -----------------------
 let report (rows: string[]) : string[] =
-    // TODO 6
-    [||]
+    rows
+    |> Array.skip 1                       // drop the header
+    |> Array.map summaryLine              // one summary string per product
+
 
 
 // ----------------------- tests (don't edit) -----------------------
