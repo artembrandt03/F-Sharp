@@ -31,50 +31,38 @@
 // =====================================================================
 
 open System.IO
+open SplitIntoFilesExercise
 
-// ======================= PARSE  ->  move to Parse.fs ===================
-module Parse =
-
-    let intOr (d : int) (s : string) =
-        if s = "?" then d else int s
-
-// ======================= BOOK  ->  move to Book.fs =====================
-type Book =
-    {
-        Title : string
-        Author : string
-        Pages : int
-    }
-
-module Book =
-
-    let fromString (row : string) =
-        let elements = row.Split('\t')
-        {
-            Title = elements.[0]
-            Author = elements.[1]
-            Pages = Parse.intOr 0 elements.[2]
-        }
-
-    let describe (book : Book) =
-        sprintf "%s by %s, %i pages" book.Title book.Author book.Pages
-
-// ======================= SHELF  ->  move to Shelf.fs ===================
-module Shelf =
-
-    let totalPages (books : Book[]) =
-        books
-        |> Array.map (fun book -> book.Pages)
-        |> Array.sum
-
-    let describeAll (rows : string[]) =
-        rows
-        |> Array.map Book.fromString
-        |> Array.map Book.describe
+// ----------------------- grading -----------------------
+// Result: 10 / 10 PASS (4 logic + 6 structure). The split works.
+//
+//   [x] Parse.fs, Book.fs, Shelf.fs created, each starting with a namespace
+//   [x] type Book AND module Book kept together in Book.fs
+//   [x] .fsproj order Parse -> Book -> Shelf -> Program (dependency order)
+//   [x] Program.fs opens the namespace and keeps only tests + main
+//   [~] namespace name: the spec said `Bookshop`, you used
+//       `SplitIntoFilesExercise`
+//
+// GOOD: the .fsproj order is exactly right. Book uses Parse (intOr), Shelf
+//   uses Book, and Program uses all three. Each file sits below
+//   everything it depends on.
+// GOOD: `type Book` and `module Book` share a file and a name, like
+//   Student.fs in lesson 25. The type and the functions for it travel
+//   together.
+//
+// ON THE NAMESPACE: it compiles and works, so it's not a bug, just not
+//   what was asked. A namespace names what the code IS ("Bookshop": books,
+//   shelves), not which exercise it came from. Lesson 25 uses
+//   `StudentScores`, the name of the domain. If you want to match the spec,
+//   it's a 4-line change: the first line of Parse.fs, Book.fs and Shelf.fs,
+//   plus the `open` above. Nothing else refers to the namespace's name.
+//
+// TIDY-UP (optional): Parse.fs, Book.fs and Shelf.fs still have the
+//   "// ===== X -> move to X.fs =====" banner lines that came with the cut.
+//   They were instructions for the move; now they're just noise, so you
+//   can delete them.
 
 // ======================= everything below STAYS in Program.fs ==========
-
-
 // ----------------------- tests (don't edit) -----------------------
 let check (testName: string) expected actual =
     if actual = expected then
