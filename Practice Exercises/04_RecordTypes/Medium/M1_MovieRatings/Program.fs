@@ -61,27 +61,87 @@ type Movie =
         BestRating : float
     }
 
+// ----------------------- worked solution -----------------------
+// You asked for the full solution, so this is a WALKTHROUGH, not a grade.
+// Your partial start on `fromString` is kept (commented out) with notes.
+//
+// ----------------------- your start (1) -----------------------
+//     let fromString (row : string) : Movie =
+//         let elements = row.Split('\t')
+//         {
+//             Title = elements.[0]
+//             Year = elements.[1]
+//             RatingCount = (elements.Length - 2)
+//             AverageRating
+//         }
+//
+//  GOOD: split first, then build the record last. That's the right shape.
+//  GOOD: `elements.Length - 2` for the count is CORRECT: every column
+//    except Title and Year is a rating. (Below I count the parsed ratings
+//    array instead, so all three numbers come from the same place.)
+//  * `Year = elements.[1]`: elements are strings and Year is an int, so it
+//    needs `int elements.[1]`. (Compile error: "expected int but here has
+//    type string".)
+//  * `AverageRating` with no `= value`: every field needs a value, and
+//    BestRating was missing too. A record must have ALL its fields.
+
 module Movie =
 
+    // 1. Row -> Movie record -------------------------------------------
     let fromString (row : string) : Movie =
-        // TODO 1
-        { Title = ""; Year = 0; RatingCount = 0; AverageRating = 0.0; BestRating = 0.0 }
+        let elements = row.Split('\t')
+        //   "Inception\t2010\t9.0\t8.0\t9.5\t7.5"
+        //   -> [| "Inception"; "2010"; "9.0"; "8.0"; "9.5"; "7.5" |]
 
+        // Parse the ratings ONCE and reuse them for count, average and best.
+        // Skip 2 = skip Title and Year; everything left is a rating,
+        // however many there are.
+        let ratings =
+            elements
+            |> Array.skip 2
+            |> Array.map float          // [| 9.0; 8.0; 9.5; 7.5 |]
+
+        // Build the record LAST, so it's the function's result.
+        // Every field must be given a value, in any order.
+        {
+            Title = elements.[0]
+            Year = int elements.[1]                     // string -> int
+            RatingCount = ratings |> Array.length       // 4
+            AverageRating = ratings |> Array.average    // 8.5
+            BestRating = ratings |> Array.max           // 9.5
+        }
+
+    // 2. Movie -> sentence ------------------------------------------------
     let describe (movie : Movie) : string =
-        // TODO 2
-        ""
+        // The %-slots are filled IN ORDER by the values after the string:
+        //   %s Title, %i Year, %0.1f Average, %i Count, %0.1f Best
+        // %i is for ints, %0.1f for floats with 1 decimal place.
+        sprintf "%s (%i): %0.1f average from %i ratings, best %0.1f"
+            movie.Title movie.Year movie.AverageRating movie.RatingCount movie.BestRating
 
+    // 3. Movie -> true/false ---------------------------------------------
     let isClassic (movie : Movie) : bool =
-        // TODO 3
-        false
+        // A comparison already IS a bool, so no if/else is needed.
+        // `<` (not `<=`): "BEFORE 1980" means 1980 itself is not a classic.
+        movie.Year < 1980
 
+// 4. Sort, highest rating first ----------------------------------------
 let bestFirst (movies : Movie[]) : Movie[] =
-    // TODO 4
     movies
+    |> Array.sortByDescending (fun movie -> movie.AverageRating)
+    //   `fun movie -> movie.AverageRating` = "given a movie, give back its
+    //   rating". sortByDescending sorts by those answers, biggest first.
 
+// 5. The whole report: one pipeline reusing 1, 2 and 4 ----------------
 let report (rows : string[]) : string[] =
-    // TODO 5
-    [||]
+    rows
+    |> Array.skip 1                 // drop the header row
+    |> Array.map Movie.fromString   // string[]  -> Movie[]
+    |> bestFirst                    // Movie[]   -> Movie[] (sorted)
+    |> Array.map Movie.describe     // Movie[]   -> string[]
+    // Sort BEFORE describing: once they're strings, the ratings are just
+    // text, and sorting text would put "9.0..." after "8.5..." by letters,
+    // not by number. Records keep the real numbers until the last step.
 
 
 // ----------------------- tests (don't edit) -----------------------
