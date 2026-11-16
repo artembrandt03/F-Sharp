@@ -31,26 +31,59 @@
 //  Run:  dotnet run
 // =====================================================================
 
+// ----------------------- grading -----------------------
+// Result: 10 / 10 tests PASS. All 4 bugs found and fixed.
+//
+//   [x] distances    Array.skip 2   -> Array.skip 1
+//   [x] longestRun   Array.min      -> Array.max
+//   [x] runnerCount  Array.length   -> (Array.length) - 1
+//   [x] summary      %0.2f          -> %0.1f
+//
+// Your version is left in place below, with notes on each line.
+
+// ----------------------- your solution -----------------------
 let runnerName (row: string) =
     let elements = row.Split('\t')
-    elements.[0]
+    elements.[0]                      // (unchanged: this one had no bug)
 
 let distances (row: string) =
     row.Split('\t')
-    |> Array.skip 2
-    |> Array.map float
+    |> Array.skip 1                   // FIX 1: GOOD. Only the NAME comes before
+    |> Array.map float                //   the numbers here. StudentScores skipped 2
+                                      //   because it had Name AND Id. Always count
+                                      //   the columns of YOUR data before copying a skip.
+    // SNEAKY: with `skip 2`, "averageRun Alice" still PASSED, because
+    //   [3.0; 8.5; 5.0] happens to average 5.5 too, and "longestRun Bob"
+    //   passed because Bob's max is his last run. A passing test doesn't
+    //   prove the code is right; the failing ones pointed at the real bug.
 
 let longestRun (row: string) =
-    distances row |> Array.min
+    distances row |> Array.max        // FIX 2: GOOD. "longest" = max.
 
 let averageRun (row: string) =
-    distances row |> Array.average
+    distances row |> Array.average    // (unchanged: this one had no bug)
 
 let runnerCount (rows: string[]) =
-    rows |> Array.length
+    (rows |> Array.length) - 1        // FIX 3: GOOD. The header row isn't a runner,
+                                      //   same as `studentCount` in lesson 17.
+    // GOOD: the brackets MATTER here. `-` binds tighter than `|>`, so
+    //   `rows |> Array.length - 1` would mean `rows |> (Array.length - 1)`,
+    //   i.e. "subtract 1 from a function", which doesn't compile.
+    //   You copied the lesson's brackets, and they're exactly right.
 
 let summary (row: string) =
-    sprintf "%s: longest %0.2f km, average %0.1f km" (runnerName row) (longestRun row) (averageRun row)
+    sprintf "%s: longest %0.1f km, average %0.1f km" (runnerName row) (longestRun row) (averageRun row)
+    // FIX 4: GOOD. %0.2f gave "8.50"; %0.1f gives "8.5". The number after
+    //   the dot is how many decimal places to print.
+
+// OPTIONAL (not a bug): `summary` calls longestRun and averageRun, and each
+//   of those calls `distances`, so the row gets split and parsed twice.
+//   For tiny data that's fine. If it mattered, you could parse once:
+//
+// let summary (row: string) =
+//     let runs = distances row
+//     sprintf "%s: longest %0.1f km, average %0.1f km"
+//         (runnerName row) (Array.max runs) (Array.average runs)
 
 
 // ----------------------- tests (don't edit) -----------------------
