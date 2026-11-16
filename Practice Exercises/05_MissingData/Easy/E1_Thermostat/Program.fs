@@ -34,28 +34,73 @@
 //  Run:  dotnet run
 // =====================================================================
 
+// ----------------------- grading -----------------------
+// Result: 8 / 8 tests PASS, but Bug 2 is only HALF fixed. The tests
+//   happened to miss it (my fault as the test writer: they only ever
+//   used a default of 20.0).
+//
+//   [x] Bug 1  tryFromString  Some 0.0 -> None                 solved on your own
+//   [~] Bug 2  fromStringOr   0.0 -> 20.0, but should be `d`   half: see below
+//   [x] Bug 3  averageKnown   Array.map -> Array.choose        solved with hint
+//   [x] Bug 4  countMissing   <> None -> = None                solved with hint
+//
+// Using the hints for 3 and 4 is fine; that's what they're for. Those
+//   two are the core of lesson 21 (choose vs map, and None meaning
+//   "missing"), so they're worth re-reading in a day or two.
+
+// ----------------------- your solution -----------------------
 module Reading =
 
     let tryFromString (s : string) =
         if s = "N/A" then
-            Some 0.0
-        else
-            Some (float s)
+            None                      // FIX 1: GOOD, on your own. "No reading"
+        else                          //   isn't "0 degrees". Some 0.0 would claim
+            Some (float s)            //   the sensor read 0, and the average
+                                      //   would quietly use it. None says "unknown".
 
+    // ---- your attempt (Bug 2) ----
+    // let fromStringOr (d : float) (s : string) =
+    //     s
+    //     |> tryFromString
+    //     |> Option.defaultValue 20.0
+    //
+    //  You replaced one hard-coded number (0.0) with another (20.0). It
+    //  passes because every test happens to want 20.0, but `d` is still
+    //  never used:
+    //      Reading.fromStringOr 5.0 "N/A"   -> 20.0   (should be 5.0!)
+    //
+    //  The whole point of the `d` parameter is that the CALLER chooses the
+    //  default. `fromStringOr 20.0` in main and `fromStringOr 50.0` in
+    //  lesson 21 should both work, so pass `d` through.
+    //
+    //  TIP: if you write a parameter and never use it, something's wrong.
+    //    Once Ionide is working (.NET 10), unused parameters show up faded
+    //    in the editor.
+
+    // ---- fixed (Bug 2) ----
     let fromStringOr (d : float) (s : string) =
         s
-        |> tryFromString
-        |> Option.defaultValue 0.0
+        |> tryFromString              // float option
+        |> Option.defaultValue d      // Some x -> x, None -> whatever the caller passed
 
 let averageKnown (readings : string[]) =
     readings
-    |> Array.map (Reading.fromStringOr 0.0)
-    |> Array.average
+    |> Array.choose Reading.tryFromString   // FIX 3: GOOD. choose keeps only
+    |> Array.average                        //   the Somes, unwrapped:
+    //   [| "21.0"; "N/A"; "23.0"; "N/A"; "22.0" |] -> [| 21.0; 23.0; 22.0 |] -> 22.0
+    //   The old Array.map (fromStringOr 0.0) kept all 5 with zeros -> 13.2.
+    //   RULE OF THUMB: map = same number of items out; choose = maybe fewer.
+    // NOTE: if EVERY reading were "N/A", choose would give an empty array
+    //   and Array.average would crash. That's not tested here, but it's a
+    //   classic missing-data edge case to keep in mind.
 
 let countMissing (readings : string[]) =
     readings
-    |> Array.filter (fun s -> Reading.tryFromString s <> None)
+    |> Array.filter (fun s -> Reading.tryFromString s = None)   // FIX 4: GOOD.
     |> Array.length
+    //   `= None` reads as "is missing". Same as
+    //   (fun s -> Option.isNone (Reading.tryFromString s)), which you'll
+    //   meet in the medium exercise.
 
 
 // ----------------------- tests (don't edit) -----------------------
@@ -74,6 +119,7 @@ let main argv =
     check "tryFromString N/A" None (Reading.tryFromString "N/A")
     check "fromStringOr number" 18.0 (Reading.fromStringOr 20.0 "18.0")
     check "fromStringOr N/A uses default" 20.0 (Reading.fromStringOr 20.0 "N/A")
+    check "fromStringOr other default" 5.0 (Reading.fromStringOr 5.0 "N/A")
     check "averageKnown skips missing" 22.0 (averageKnown log)
     check "averageKnown none missing" 21.0 (averageKnown [| "20.0"; "22.0" |])
     check "countMissing" 2 (countMissing log)
