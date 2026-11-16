@@ -1,0 +1,6 @@
+Product	Price	Stock
+Widget	4.50	10
+Gizmo	N/A	3
+Doodad	12.00	?
+Thing		7
+Sprocket	0.75	120
