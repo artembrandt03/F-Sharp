@@ -80,39 +80,26 @@
 //
 //  A parcel is in one of 4 states:
 //
-//      type Delivery =
-//          | Pending                  waiting in the warehouse
-//          | Shipped of string        on its way; carries the TRACKING CODE
-//          | Delivered of int         arrived; carries how many DAYS it took
-//          | Lost
+//      // ----------------------- grading -----------------------
+// Result: 12 / 12 tests PASS, and NO compiler warning. All 4 bugs fixed.
 //
-//  Each row of the log is "Status<TAB>Detail":
-//      "Shipped\tTRK42"  ->  Shipped "TRK42"
-//      "Delivered\t3"    ->  Delivered 3
-//      "Pending\t"       ->  Pending          (detail is empty)
+//   [x] fromString  `else Pending` -> `else Lost`                (concept 2)
+//   [x] describe    "code" (text) -> code (the value)            (concept 3)
+//   [x] describe    added the missing `| Lost ->` branch         (concept 5)
+//   [x] tryDays     Some 0 -> None for the no-days cases         (concept 6)
 //
-//  Expected:
-//      describe Pending          = "Waiting to ship"
-//      describe (Shipped "TRK42")= "On its way (tracking TRK42)"
-//      describe (Delivered 3)    = "Delivered in 3 days"
-//      describe Lost             = "Lost in transit"
+// Since you said DUs didn't click at first: these four fixes cover the
+//   whole lesson. You built a value with a case name, took data out of
+//   a case with match, made a match handle EVERY case, and turned a DU
+//   into an option for Array.choose. That's the core of lesson 27.
 //
-//      tryDays (Delivered 3) = Some 3
-//      tryDays anything else = None   (no "days" to report yet / ever)
-//
-//  4 bugs: one in fromString, two in describe, one in tryDays.
-//  (One of them shows up as a compiler WARNING before it crashes.)
-//  averageDays has no bug, but it gives the wrong answer until tryDays is fixed.
-//
-//  Stuck? Hints at the VERY BOTTOM of the file.
-//
-//  Run:  dotnet run
-// =====================================================================
+// Your version is left in place below, with notes.
 
+// ----------------------- your solution -----------------------
 type Delivery =
-    | Pending
-    | Shipped of string
-    | Delivered of int
+    | Pending                 // 4 cases: a Delivery is exactly ONE of these.
+    | Shipped of string       //   Two carry data (a tracking code, a number
+    | Delivered of int        //   of days); two are empty labels.
     | Lost
 
 module Delivery =
@@ -122,32 +109,48 @@ module Delivery =
         let status = elements.[0]
         let detail = elements.[1]
         if status = "Pending" then
-            Pending
+            Pending                       // case name alone = an empty box
         elif status = "Shipped" then
-            Shipped detail
-        elif status = "Delivered" then
-            Delivered (int detail)
-        else
-            Pending
+            Shipped detail                // case name + value = a box with
+        elif status = "Delivered" then    //   something inside
+            Delivered (int detail)        // brackets: Delivered gets ONE thing,
+        else                              //   the result of `int detail`
+            Lost                          // FIX 1: GOOD.
+        // THINK ABOUT (not a bug here): `else` catches EVERY other status,
+        //   so a typo like "Delivred" would quietly become Lost. Writing
+        //   `elif status = "Lost" then Lost` and handling "unknown" some
+        //   other way is safer. Lesson 31 (exceptions) gives you a tool
+        //   for that. For now, matching the lesson's TestResult.fromString
+        //   style is fine.
 
     let describe (delivery : Delivery) =
         match delivery with
         | Pending -> "Waiting to ship"
-        | Shipped code -> sprintf "On its way (tracking %s)" "code"
+        | Shipped code -> sprintf "On its way (tracking %s)" code
+                                          // FIX 2: GOOD. `code` is the NAME
+                                          //   for what was inside the box;
+                                          //   "code" in quotes is just the
+                                          //   4 letters c-o-d-e.
         | Delivered days -> sprintf "Delivered in %i days" days
+        | Lost -> "Lost in transit"       // FIX 3: GOOD. 4 cases, 4 branches,
+                                          //   so the "incomplete pattern
+                                          //   matches" warning is gone and Lost
+                                          //   no longer crashes the program.
 
     let tryDays (delivery : Delivery) =
         match delivery with
-        | Delivered days -> Some days
-        | Pending
-        | Shipped _
-        | Lost -> Some 0
+        | Delivered days -> Some days     // the ONE case that has a number
+        | Pending                         // stacked cases share one answer.
+        | Shipped _                       //   `_` = "whatever code is inside,
+        | Lost -> None                    //   I don't need it".
+                                          // FIX 4: GOOD. "No days yet" isn't
+                                          //   "0 days": None, not Some 0.
 
 let averageDays (deliveries : Delivery[]) =
     deliveries
-    |> Array.choose Delivery.tryDays
-    |> Array.map float
-    |> Array.average
+    |> Array.choose Delivery.tryDays   // [Delivered 3; Shipped..; Delivered 5; Pending; Lost]
+    |> Array.map float                 //   -> [| 3; 5 |] -> [| 3.0; 5.0 |]
+    |> Array.average                   //   -> 4.0  (with Some 0 it was 8/5 = 1.6)
 
 
 // ----------------------- tests (don't edit) -----------------------
