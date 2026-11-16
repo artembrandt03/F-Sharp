@@ -95,38 +95,152 @@
 
 open System.IO
 
+// ----------------------- grading -----------------------
+// You did 0-3 (3 partly) and asked me to finish, so this is part GRADE,
+//   part WALKTHROUGH. As written it DIDN'T COMPILE. With the fixes and
+//   4-5 below: 18 / 18.
+//
+//   [x] 0 Refund case    added correctly
+//   [x] 1 fromString     correct, and better than asked (failwith, see below)
+//   [ ] 2 amountTaken    right answers, but the data inside each case was
+//                        never NAMED                              (fixed below)
+//   [ ] 3 describe       same naming issue + %f + unfinished      (fixed below)
+//   [-] 4 tryCash        not started                              (written below)
+//   [-] 5 dayTotal / cashInDrawer  not started                    (written below)
+//
+// THE ONE IDEA TO TAKE AWAY (it caused every bug in 2 and 3):
+//   In a match branch, a case WITH data must be written with a NAME for
+//   that data:
+//       | Cash -> x            "if it's Cash..." but x was never defined
+//       | Cash x -> x          "if it's Cash, call what's inside x, give x back"
+//   The name goes RIGHT AFTER the case name, in the pattern. You pick
+//   it, and it only exists in that one branch. Cases WITHOUT data
+//   (Unpaid) have nothing to name. For data you don't need, write `_`.
+
+// ---- your solution (0) ----
 type Payment =
     | Cash of float
     | Card of float
     | Voucher of string
     | Unpaid
-    // TODO 0: add the Refund case here
+    | Refund of float       // GOOD: one line, and now the compiler knows
+                            //   every match must handle Refund too.
 
 module Payment =
 
+    // ---- your solution (1) ----
     let fromString (row : string) : Payment =
-        // TODO 1
-        Unpaid
+        let elems = row.Split('\t')
+        let method = elems.[0]
+        let detail = elems.[1]
+        if method = "Cash" then
+            Cash (float detail)           // GOOD: brackets so Cash gets ONE thing
+        elif method = "Card" then
+            Card (float detail)
+        elif method = "Voucher" then
+            Voucher (string detail)       // works, but `detail` is ALREADY a
+                                          //   string, so `Voucher detail` is enough
+        elif method = "Unpaid" then
+            Unpaid
+        elif method = "Refund" then
+            Refund (float detail)
+        else
+          failwith "Failed payment type"
+        // GOOD, and ahead of the course: you checked "Unpaid" explicitly
+        //   and made unknown methods FAIL instead of quietly becoming
+        //   Unpaid. That's exactly the "typo becomes Lost" issue from E1.
+        //   `failwith "message"` stops the program with that error message
+        //   (lesson 31 covers it properly). It also works as the else
+        //   branch because failwith never returns, so F# accepts it where a
+        //   Payment is expected.
+        // STYLE: the `else` body is indented 2 spaces, but everything else
+        //   uses 4. F# accepted it, but keep it consistent.
 
+    // ---- your attempt (2) ----
+    //     let amountTaken (payment : Payment) : float =
+    //         match payment with
+    //         | Cash -> x
+    //         | Card -> x - 0.50
+    //         | Voucher _ -> 10.0
+    //         | Unpaid -> 0.0
+    //         | Refund -> -amount
+    //
+    //  GOOD: the right answer for every case, and `Voucher _` is exactly
+    //    right (you named nothing because you don't need the code).
+    //  * `| Cash -> x`: x is never defined. The pattern has to NAME the
+    //    float inside: `| Cash x -> x`. Same for Card and Refund. (You
+    //    used `x` in some branches and `amount` in another; any name
+    //    works, but it has to be declared in the pattern.)
+
+    // ---- fixed (2) ----
     let amountTaken (payment : Payment) : float =
-        // TODO 2
-        0.0
+        match payment with
+        | Cash amount -> amount             // name the float `amount`, return it
+        | Card amount -> amount - 0.50      // the bank keeps 0.50
+        | Voucher _ -> 10.0                 // the code doesn't matter
+        | Unpaid -> 0.0                     // no data, nothing to name
+        | Refund amount -> -amount          // money going OUT, so negative
 
+    // ---- your attempt (3) ----
+    //     let describe (payment : Payment) : string =
+    //         match payment with
+    //         | Cash -> sprintf "Cash %f" money
+    //         | Card -> sprintf "Card %f (fee 0.50)" money
+    //         | Voucher
+    //
+    //  * Same naming issue: `money` is never defined. `| Cash money -> ...`
+    //  * `%f` prints 6 decimal places ("12.500000"). The spec wants 2:
+    //    `%0.2f` ("12.50").
+    //  * Unfinished: `| Voucher` with no `->` was the compile error
+    //    ("Expected '->'"). Unpaid and Refund were missing too, which
+    //    would have given the "incomplete matches" warning.
+
+    // ---- fixed (3) ----
     let describe (payment : Payment) : string =
-        // TODO 3
-        ""
+        match payment with
+        | Cash amount -> sprintf "Cash %0.2f" amount
+        | Card amount -> sprintf "Card %0.2f (fee 0.50)" amount
+        | Voucher code -> sprintf "Voucher %s" code      // the data is a STRING -> %s
+        | Unpaid -> "Unpaid"
+        | Refund amount -> sprintf "Refund %0.2f" amount
+        // Here we DO need the voucher code (to print it), so we name it
+        //   `code` instead of using `_` like in amountTaken.
 
+    // ---- written for you (4) ----
     let tryCash (payment : Payment) : float option =
-        // TODO 4
-        None
+        match payment with
+        | Cash amount -> Some amount        // the one case we want: wrap it in Some
+        | Card _                            // everything else -> None.
+        | Voucher _                         //   Stacked cases share the last
+        | Unpaid                            //   branch, like lesson 27's
+        | Refund _ -> None                  //   `| Excused | Voided -> None`.
+        // Why an option? So Array.choose can KEEP the cash amounts and DROP
+        //   everything else in one step (see cashInDrawer below).
+        // Why list the other 4 cases instead of writing `| _ -> None`? Both
+        //   work. Listing them means that if you add a new case later
+        //   (say `Crypto of float`), the compiler warns HERE too, and you
+        //   decide on purpose whether it counts as cash.
 
+// ---- written for you (5a) ----
 let dayTotal (rows : string[]) : float =
-    // TODO 5a
-    0.0
+    rows
+    |> Array.skip 1                     // drop the "Method\tDetail" header
+    |> Array.map Payment.fromString     // string[]  -> Payment[]
+    |> Array.map Payment.amountTaken    // Payment[] -> float[]  (one amount each)
+    |> Array.sum                        // add them up
+    // Test rows: 12.5 + 19.5 + 10.0 + 0.0 + (-5.0) + 7.5 = 44.5
 
+// ---- written for you (5b) ----
 let cashInDrawer (rows : string[]) : float =
-    // TODO 5b
-    0.0
+    rows
+    |> Array.skip 1
+    |> Array.map Payment.fromString
+    |> Array.choose Payment.tryCash     // keep ONLY the Somes, unwrapped:
+    |> Array.sum                        //   [Cash 12.5; Card..; ..; Cash 7.5]
+                                        //   -> [| 12.5; 7.5 |] -> 20.0
+    // Same pipeline as dayTotal; only ONE step changed. `map amountTaken`
+    //   keeps every payment; `choose tryCash` keeps only the cash ones.
+    //   That's the map-vs-choose difference again.
 
 
 // ----------------------- tests (don't edit) -----------------------
