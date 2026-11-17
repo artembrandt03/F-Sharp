@@ -12,16 +12,21 @@ type Student =
  
 module Student =
  
-    let namePart i (s : string) =
+    let nameParts (s : string) =
         let elements = s.Split(',')
-        elements.[i].Trim()
+        match elements with
+        | [|surname; givenName|] ->
+            surname.Trim(), givenName.Trim()
+        | [|surname|] ->
+            surname.Trim(), "(None)"
+        | _ ->
+            raise(System.FormatException(sprintf"Invalid name format: %s" s))
  
     let fromString (s : string) =
         let elements = s.Split('\t')
         let name = elements.[0]
         // TODO: Inefficient, splits a string twice.
-        let sur = namePart 0 name
-        let given = namePart 1 name
+        let sur, given = name |> nameParts
         let id = elements.[1]    
         let scores =
             elements
