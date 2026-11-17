@@ -14,14 +14,14 @@ module Summary =
                 student.GivenName student.Id student.MeanScore student.MinScore student.MaxScore)
  
     let summarize filePath =
-        let rows = File.ReadAllLines filePath
-        let studentCount = (rows |> Array.length) - 1
+        let rows = File.ReadLines filePath
+        let studentCount = (rows |> Seq.length) - 1
         printfn "Student count %i" studentCount
         rows
-        |> Array.skip 1
-        |> Array.map Student.fromString
-        |> Array.sortByDescending (fun student -> student.MeanScore)
-        |> Array.iter Student.printSummary
+        |> Seq.skip 1
+        |> Seq.map Student.fromString
+        |> Seq.sortByDescending (fun student -> student.MeanScore)
+        |> Seq.iter Student.printSummary
 
     // let summarize filePath =
     //     let rows = File.ReadAllLines filePath

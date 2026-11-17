@@ -14,7 +14,9 @@ module Summary =
                 student.GivenName student.Id student.MeanScore student.MinScore student.MaxScore)
  
     let summarize filePath =
-        let rows = File.ReadLines filePath
+        let rows = 
+            File.ReadLines filePath
+            |> Seq.cache
         let studentCount = (rows |> Seq.length) - 1
         printfn "Student count %i" studentCount
         rows
