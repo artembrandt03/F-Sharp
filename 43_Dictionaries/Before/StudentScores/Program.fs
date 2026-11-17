@@ -16,6 +16,8 @@ let main argv =
         else
             printfn "Processing %s (school codes: %s)"  studentsFilePath schoolCodesFilePath
             try
+                // [Claude Code explaining] This line was correct all along. Its error
+                //   came from a typo in Summary.fs (see the comment above `summarize`).
                 Summary.summarize schoolCodesFilePath studentsFilePath
                 0
             with
