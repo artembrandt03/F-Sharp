@@ -1,6 +1,6 @@
 namespace GenericPoints
  
-type Point <'T> = 
+type Point<'T> = 
     {
         X : 'T
         Y : 'T
