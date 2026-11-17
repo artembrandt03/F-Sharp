@@ -5,8 +5,12 @@ open Bricks
 let main argv =
 
     let bricks =
-
+        // changed to seq for comparisons, then changed back to array
         [|
+            do printfn "Creating elements" //would have to 'yield' (claude code -> explain yield later in the final cheat sheet)
+                                           // but 'do' works as well
+            // So IF ARRAY - Message printed before "All the bricks:"
+            // IF SEQ - AFTER (since created on demand)
             (3, 2, ConsoleColor.Yellow)
             (4, 2, ConsoleColor.Green)
             (2, 1, ConsoleColor.Magenta)
@@ -29,11 +33,23 @@ let main argv =
             (4, 1, ConsoleColor.Magenta)
         |]
         |> Array.map (fun (sc, sr, cc) -> { StudColumns = sc; StudRows = sr; Color = cc })
+        // |> Seq.map ...
+        // |> Seq.cache -> will be computed only first time it's requested
 
     printfn "All the bricks:"
-    bricks
+    bricks //In the debugger, bricks is now "bricks [IEnumerable]" which is just a term for "Sequence" in .NET
+           // So a series of items of the same type which can be iterated over, filtered, etc.
+           // Bricks -> would not be generated (in memory?) unless we *view* them
+           // SO elems aren't computed until we ask for them
     |> Array.iter (Brick.printConsole)
     printfn "\n"
+
+    // To convert between SEQ and ARRAY:
+    // Array.ofSeq
+    // Seq.toArray
+
+    // All arrays are sequences, but not all sequences are arrays
+
 
     printfn "Count of the bricks:"
     let count = bricks |> Array.length
@@ -80,3 +96,12 @@ let main argv =
     printfn ""
 
     0 
+
+// WHEN TO USE SEQ/ ARRAY QUICK GUIDE:
+// Collection is short-lived e.g only exists to be summarized or piped forwards -> SEQ
+// Long collection but only some elements need to be accessed -> SEQ
+// Need to itterate over the collection several times -> ARRAY or SEQ with Seq.cache
+// When needed to access elements in a collection by index -> ARRAY
+// When needed to revisit/access same element in a collectionb multiple times -> ARRAY or SEQ.Item
+
+// But in the end... test with a volume of data
