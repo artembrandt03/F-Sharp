@@ -55,7 +55,7 @@ let main argv =
     let groupedByColor =
         bricks
         |> Array.groupBy (fun b -> b.Color)
- 
+    
     groupedByColor
     |> Array.iter (fun (color, bricks) ->
         printfn "%s:" (color.ToString())
@@ -65,4 +65,19 @@ let main argv =
     )
     printfn ""
 
-    0 
+    printfn "Grouped by stud count (Array.groupBy):"
+    let groupedByStudCount =
+        bricks
+        |> Array.groupBy (fun b -> b.StudRows * b.StudColumns)
+    
+    groupedByStudCount
+    // |> Array.sortBy (fun (studCount, _) -> //undersocre for "bound but ignored!"
+    //     studCount)
+    |> Array.sortBy fst
+    |> Array.iter (fun (studCount, bricks) ->
+        printfn "%i stud:" studCount
+        bricks
+        |> Array.iter Brick.printConsole
+        printfn "")
+    printfn ""
+    0
