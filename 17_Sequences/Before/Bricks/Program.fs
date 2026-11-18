@@ -9,6 +9,27 @@ let main argv =
         [|
             do printfn "Creating elements" //would have to 'yield' (claude code -> explain yield later in the final cheat sheet)
                                            // but 'do' works as well
+            // [Claude Code explaining] YIELD vs DO inside [| |], [ ] and seq { }
+            //   Brackets with code inside are a little "factory" that produces
+            //   the collection's elements. Every line in it is one of two kinds:
+            //     yield x   -> "put x INTO the collection" (produce an element)
+            //     do expr   -> "just RUN this, put nothing in" (a side effect,
+            //                  like printing)
+            //   IMPLICIT YIELD: most of the time F# adds `yield` for you, which is
+            //   why lesson 16's `if x |> isEven then x` worked without it.
+            //   WHY `do` IS NEEDED HERE (I tested it): without `do`, F# reads the
+            //   newline-separated lines as a plain list of elements:
+            //   printfn (a unit) first, then the tuples. Every element must have
+            //   the same type, so it fails with "All elements of an array must be
+            //   ... the type of the first element, which here is 'unit'".
+            //   Your note is right: the other fix is to write `yield` before
+            //   EVERY tuple. Once there's an explicit yield, F# treats
+            //   printfn as a side effect. But careful: then EVERY element needs
+            //   its own `yield`. In `[ yield 0; 3 ]` the 3 is silently dropped
+            //   (just a warning). `do` is the cleaner fix here.
+            //   yield! (yield-bang) = "put ALL the elements of this other
+            //   collection in": [ yield! [1; 2]; yield 3 ] -> [1; 2; 3].
+            //   More in Cheat Sheet/FSharp-Cheat-Sheet.md, section "Sequences".
             // So IF ARRAY - Message printed before "All the bricks:"
             // IF SEQ - AFTER (since created on demand)
             (3, 2, ConsoleColor.Yellow)
