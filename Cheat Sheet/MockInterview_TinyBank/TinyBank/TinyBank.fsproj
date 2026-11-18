@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Domain.fs" />
+    <Compile Include="Parse.fs" />
+    <Compile Include="AccountDirectory.fs" />
+    <Compile Include="Ledger.fs" />
+    <Compile Include="Forecast.fs" />
+    <Compile Include="Bank.fs" />
+    <Compile Include="Reporting.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+</Project>

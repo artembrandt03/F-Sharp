@@ -1,0 +1,12 @@
+OrderId	Customer	Item	Quantity	Discount
+O1	Maya	Latte	2	None
+O2	Noah	Muffin	1	Student
+O3	Lena	Espresso	3	Coupon:1.50
+O4	Maya	Muffin	2	None
+O5	Theo	Tea	1	None
+O6	Noah	Latte	0	None
+
+O7	Lena	Espresso	1	Coupon:abc
+O8	Theo	Espresso	1	Coupon:5.00
+O9	Maya	Latte	1	Student
+O10	Noah	Muffin

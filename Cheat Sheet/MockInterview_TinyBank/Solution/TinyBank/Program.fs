@@ -21,8 +21,10 @@ let private run (accountsPath : string) (transactionsPath : string) (writer : IR
     // every row in memory and throw away the benefit of streaming.
     File.ReadLines transactionsPath
     |> Seq.mapi (fun index row -> index + 1, row)
-    |> Seq.skip 1 // the header row
-    |> Seq.filter (fun (_, row) -> not (String.IsNullOrWhiteSpace row))
+    // Line 1 is the header. A filter is safer than Seq.skip 1, which throws if
+    // the file is completely empty.
+    |> Seq.filter (fun (lineNumber, row) ->
+        lineNumber > 1 && not (String.IsNullOrWhiteSpace row))
     |> Seq.map (fun (lineNumber, row) -> Parse.transaction lineNumber row)
     // Nothing has been read yet. Seq.iter is what finally pulls rows through.
     |> Seq.iter bank.Process
