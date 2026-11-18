@@ -7,6 +7,8 @@ The early sections are quick reminders. From **06 Collection functions** on, eve
 
 The examples come from the course projects (StudentScores, Bricks, ConsolePrompt, ColorHistory), so you can open the real code next to this.
 
+To practise putting it all together, try the mock interview in [MockInterview_TinyBank/TASK.md](MockInterview_TinyBank/TASK.md).
+
 ---
 
 ## Contents

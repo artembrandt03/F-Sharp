@@ -1,0 +1,3 @@
+Id	Owner	Kind	Setting	OpeningBalance
+A100	Maya Chen	Checking	200.00	1500.00
+A100	Someone Else	Savings	0.50	10.00

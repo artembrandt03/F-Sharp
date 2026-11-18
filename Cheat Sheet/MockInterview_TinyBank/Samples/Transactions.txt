@@ -1,0 +1,16 @@
+TxId	Type	Account	Amount	Target
+T001	Deposit	A100	250.00
+T002	Withdrawal	A101	100.00
+T003	Transfer	A100	400.00	S200
+T004	Withdrawal	A100	1500.00
+T005	Withdrawal	S200	6000.00
+T006	Deposit	X999	50.00
+T007	Bonus	A100	10.00
+T008	Deposit	A101	abc
+T009	Transfer	A101	20.00
+T010	Deposit	S201	-5.00
+T011	Transfer	S201	100.00	S201
+T012	Deposit	A101	45.50
+
+T013	Transfer	S201	300.00	A101
+T014	Deposit

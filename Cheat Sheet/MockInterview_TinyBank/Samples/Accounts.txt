@@ -1,0 +1,6 @@
+Id	Owner	Kind	Setting	OpeningBalance
+A100	Maya Chen	Checking	200.00	1500.00
+A101	Noah Patel	Checking	0	80.00
+S200	Maya Chen	Savings	0.50	5000.00
+S201	Lena Ortiz	Savings	0.25	9800.00
+S202	Theo Novak	Savings	0	300.00
