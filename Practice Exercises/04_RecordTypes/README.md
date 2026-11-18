@@ -1,6 +1,6 @@
 # 04 - Record Types practice
 
-Based on lesson **19** (`type ... = { ... }`, building records, `record.Field`, `module` with the same name as the type, `Array.sortBy (fun x -> ...)`), plus lesson 17's collection functions.
+Based on lesson **7** (`type ... = { ... }`, building records, `record.Field`, `module` with the same name as the type, `Array.sortBy (fun x -> ...)`), plus lesson 6's collection functions.
 
 | Level  | Exercise          | Type                                      |
 |--------|-------------------|-------------------------------------------|

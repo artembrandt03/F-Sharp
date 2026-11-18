@@ -1,5 +1,5 @@
 // =====================================================================
-//  MEDIUM 1 - Inventory                         (lesson 21 + lesson 19)
+//  MEDIUM 1 - Inventory                         (lesson 8 + lesson 7)
 //  Type: WRITE THE FUNCTIONS - 8 small functions, ~25 lines in total.
 // =====================================================================
 //
@@ -259,7 +259,7 @@ let main argv =
 //
 //  1. Parse.tryFloat
 //     Use:   if / else,  ||,  Some,  None,  float
-//     Steps: Exactly like Float.tryFromString in lesson 21, but the
+//     Steps: Exactly like Float.tryFromString in lesson 8, but the
 //            condition checks TWO missing markers: s is "N/A" OR s is "".
 //            Missing -> None. Otherwise -> Some (float s).
 //
@@ -270,7 +270,7 @@ let main argv =
 //
 //  3. Parse.intOr
 //     Use:   |>,  tryInt,  Option.defaultValue
-//     Steps: Exactly like Float.fromStringOr in lesson 21: start with s,
+//     Steps: Exactly like Float.fromStringOr in lesson 8: start with s,
 //            pipe it into tryInt (now you have an int option), then pipe
 //            that into Option.defaultValue d.
 //

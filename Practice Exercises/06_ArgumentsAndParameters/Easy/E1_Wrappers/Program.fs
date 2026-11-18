@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Wrappers                                       (lesson 23)
+//  EASY 1 - Wrappers                                       (lesson 9)
 //  Type: BUGGED - it doesn't even compile yet. 3 bugs.
 // =====================================================================
 //
@@ -59,7 +59,7 @@ let addTag = prefixWith "[TAG] "                  //   callers.
 let firstWord (s : string) =   // FIX 1: GOOD. Without `: string`, F# doesn't
     let words = s.Split(' ')   //   know what `s` is yet, so it can't look up
     words.[0]                  //   `.Split` ("indeterminate type"). Same fix as
-                               //   namePart in lesson 23. Whenever you call a
+                               //   namePart in lesson 9. Whenever you call a
                                //   method after a dot (`s.Split`, `s.Trim`)
                                //   on a parameter, annotate that parameter.
 
@@ -94,7 +94,7 @@ let main argv =
 //  COMPILE ERROR - firstWord
 //    "Lookup on object of indeterminate type": F# can't tell what `s` is,
 //    so it doesn't know `s.Split` exists. This is the exact error from
-//    lesson 23's namePart. Tell F# what type `s` is.
+//    lesson 9's namePart. Tell F# what type `s` is.
 //
 //  LOGIC BUG - brackets
 //    Which argument of `wrap` goes on the LEFT, and which on the right?

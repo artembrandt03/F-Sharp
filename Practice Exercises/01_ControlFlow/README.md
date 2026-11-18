@@ -1,6 +1,6 @@
 # 01 - Control Flow practice
 
-Based on lessons **07** (first program, `main`/`argv`), **11** (`if / then / else` as an expression) and **13** (`for` loops, `let mutable`, `Array.iter`).
+Based on lessons **2** (first program, `main`/`argv`), **3** (`if / then / else` as an expression) and **4** (`for` loops, `let mutable`, `Array.iter`).
 
 Each exercise is its own project. Instructions are in the comments at the top of its `Program.fs`.
 

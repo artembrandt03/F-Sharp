@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Thermostat                                     (lesson 21)
+//  EASY 1 - Thermostat                                     (lesson 8)
 //  Type: BUGGED - the code compiles, but it has 4 bugs.
 // =====================================================================
 //
@@ -23,7 +23,7 @@
 //  There are 4 bugs, one per function. Don't change the tests.
 //  If you're stuck, there are hints at the VERY BOTTOM of the file.
 //
-//  Reminders from lesson 21:
+//  Reminders from lesson 8:
 //    * `Some x` = "there IS a value, and it's x".  `None` = "no value".
 //    * Option.defaultValue d  turns  Some x -> x  and  None -> d
 //    * Array.choose f  keeps only the Some results of f, unwrapped:
@@ -45,7 +45,7 @@
 //   [x] Bug 4  countMissing   <> None -> = None                solved with hint
 //
 // Using the hints for 3 and 4 is fine; that's what they're for. Those
-//   two are the core of lesson 21 (choose vs map, and None meaning
+//   two are the core of lesson 8 (choose vs map, and None meaning
 //   "missing"), so they're worth re-reading in a day or two.
 
 // ----------------------- your solution -----------------------
@@ -71,7 +71,7 @@ module Reading =
     //
     //  The whole point of the `d` parameter is that the CALLER chooses the
     //  default. `fromStringOr 20.0` in main and `fromStringOr 50.0` in
-    //  lesson 21 should both work, so pass `d` through.
+    //  lesson 8 should both work, so pass `d` through.
     //
     //  TIP: if you write a parameter and never use it, something's wrong.
     //    Once Ionide is working (.NET 10), unused parameters show up faded

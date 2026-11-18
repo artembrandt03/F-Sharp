@@ -1,6 +1,6 @@
 # 02 - Forward Piping practice
 
-Based on lesson **15** (`|>`, `Array.filter`, `Array.iter`, `|> not`), plus `if/else` from lesson 11.
+Based on lesson **5** (`|>`, `Array.filter`, `Array.iter`, `|> not`), plus `if/else` from lesson 3.
 These are fill-in-the-blanks: most of the code is there, and you write a few lines.
 
 | Level  | Exercise       | You write    |

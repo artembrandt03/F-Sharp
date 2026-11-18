@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Running Log                                    (lesson 17)
+//  EASY 1 - Running Log                                    (lesson 6)
 //  Type: BUGGED - the code compiles, but it has 4 bugs.
 // =====================================================================
 //
@@ -22,7 +22,7 @@
 //  FAIL lines, and fix them. Each fix is small: one word or one
 //  number. Don't change the tests.
 //
-//  Reminder from lesson 17:
+//  Reminder from lesson 6:
 //    Array.skip n   drops the first n items
 //    Array.map f    applies f to every item, e.g. Array.map float
 //    Array.min / Array.max / Array.average / Array.length
@@ -65,7 +65,7 @@ let averageRun (row: string) =
 
 let runnerCount (rows: string[]) =
     (rows |> Array.length) - 1        // FIX 3: GOOD. The header row isn't a runner,
-                                      //   same as `studentCount` in lesson 17.
+                                      //   same as `studentCount` in lesson 6.
     // GOOD: the brackets MATTER here. `-` binds tighter than `|>`, so
     //   `rows |> Array.length - 1` would mean `rows |> (Array.length - 1)`,
     //   i.e. "subtract 1 from a function", which doesn't compile.

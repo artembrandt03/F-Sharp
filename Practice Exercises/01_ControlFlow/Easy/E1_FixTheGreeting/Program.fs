@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Fix the Greeting                          (lessons 7, 11)
+//  EASY 1 - Fix the Greeting                          (lessons 2, 3)
 //  Type: BUGGED - the code compiles, but it's wrong.
 // =====================================================================
 //

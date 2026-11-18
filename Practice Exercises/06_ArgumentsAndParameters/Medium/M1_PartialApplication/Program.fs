@@ -1,9 +1,9 @@
 // =====================================================================
-//  MEDIUM 1 - Partial Application                          (lesson 23)
+//  MEDIUM 1 - Partial Application                          (lesson 9)
 //  Type: WRITE THE FUNCTIONS - short ones, ~12 lines in total.
 // =====================================================================
 //
-//  Lesson 23's two big ideas:
+//  Lesson 9's two big ideas:
 //    * Give a function only SOME of its arguments, and you get back a
 //      new function waiting for the rest:  singleQuote = quote '\''
 //    * So put the "settings" parameters FIRST and the data LAST. Then
@@ -15,7 +15,7 @@
 //    1. between low high x   -> true if low <= x <= high
 //    2. isTeen               -> (PARTIAL) between, for ages 13 to 19
 //
-//    3. namePart i s         -> like lesson 23: split "Eason, Kit" on ','
+//    3. namePart i s         -> like lesson 9: split "Eason, Kit" on ','
 //                               and return part i, trimmed
 //                                 namePart 0 "Eason, Kit" = "Eason"
 //                                 namePart 1 "Eason, Kit" = "Kit"
@@ -190,7 +190,7 @@ let main argv =
 //     Use:   s.Split(','),  .[i],  .Trim()
 //     Steps: Split s on the comma, take element i, and Trim() it (the
 //            given name comes with a leading space: " Kit"). Same as
-//            lesson 23.
+//            lesson 9.
 //
 //  4 + 5. surname / givenName (PARTIAL)
 //     Use:   namePart, with 1 of its 2 arguments

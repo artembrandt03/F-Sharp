@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Deliveries                                     (lesson 27)
+//  EASY 1 - Deliveries                                     (lesson 11)
 //  Type: BUGGED - 4 bugs. Read the CONCEPTS part first!
 // =====================================================================
 //
@@ -13,7 +13,7 @@
 //     Id AND a MeanScore, all at once.
 //
 //     A DU is "this OR this OR this": a value is EXACTLY ONE of a fixed
-//     list of possibilities, called CASES. In lesson 27, a test result
+//     list of possibilities, called CASES. In lesson 11, a test result
 //     is Absent OR Excused OR Voided OR Scored, never two at once.
 //
 //         type TestResult =
@@ -91,7 +91,7 @@
 // Since you said DUs didn't click at first: these four fixes cover the
 //   whole lesson. You built a value with a case name, took data out of
 //   a case with match, made a match handle EVERY case, and turned a DU
-//   into an option for Array.choose. That's the core of lesson 27.
+//   into an option for Array.choose. That's the core of lesson 11.
 //
 // Your version is left in place below, with notes.
 
@@ -119,7 +119,7 @@ module Delivery =
         // THINK ABOUT (not a bug here): `else` catches EVERY other status,
         //   so a typo like "Delivred" would quietly become Lost. Writing
         //   `elif status = "Lost" then Lost` and handling "unknown" some
-        //   other way is safer. Lesson 31 (exceptions) gives you a tool
+        //   other way is safer. Lesson 13 (exceptions) gives you a tool
         //   for that. For now, matching the lesson's TestResult.fromString
         //   style is fine.
 
@@ -205,8 +205,8 @@ let main argv =
 //
 //  tryDays
 //    Only a Delivered parcel has a number of days. For the other three,
-//    there's NO number, and "no value" isn't 0 (same idea as lesson 21:
+//    there's NO number, and "no value" isn't 0 (same idea as lesson 8:
 //    a missing reading isn't 0 degrees). Which option value means "no
 //    value"? Once fixed, averageDays skips them via Array.choose, exactly
-//    like tryEffectiveScore + Array.choose in lesson 27.
+//    like tryEffectiveScore + Array.choose in lesson 11.
 // =====================================================================

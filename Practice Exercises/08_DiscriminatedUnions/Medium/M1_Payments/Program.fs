@@ -1,5 +1,5 @@
 // =====================================================================
-//  MEDIUM 1 - Payments                                     (lesson 27)
+//  MEDIUM 1 - Payments                                     (lesson 11)
 //  Type: WRITE THE CODE - add 1 case, write 5 functions (~35 lines).
 //        Do the Easy one first: its CONCEPTS section explains DUs.
 // =====================================================================
@@ -24,7 +24,7 @@
 //    handle Refund gets an "Incomplete pattern matches" WARNING. That's
 //    the great thing about DUs: the compiler gives you a to-do list of
 //    every place in your code that needs to know about the new case.
-//    (Lesson 27's exercise did exactly this when it added Voided.)
+//    (Lesson 11's exercise did exactly this when it added Voided.)
 //
 //  NEW 2: THE SAME DATA, DIFFERENT MEANINGS
 //    Cash, Card and Refund all carry a float, but they MEAN different
@@ -150,7 +150,7 @@ module Payment =
         //   and made unknown methods FAIL instead of quietly becoming
         //   Unpaid. That's exactly the "typo becomes Lost" issue from E1.
         //   `failwith "message"` stops the program with that error message
-        //   (lesson 31 covers it properly). It also works as the else
+        //   (lesson 13 covers it properly). It also works as the else
         //   branch because failwith never returns, so F# accepts it where a
         //   Payment is expected.
         // STYLE: the `else` body is indented 2 spaces, but everything else
@@ -212,7 +212,7 @@ module Payment =
         | Cash amount -> Some amount        // the one case we want: wrap it in Some
         | Card _                            // everything else -> None.
         | Voucher _                         //   Stacked cases share the last
-        | Unpaid                            //   branch, like lesson 27's
+        | Unpaid                            //   branch, like lesson 11's
         | Refund _ -> None                  //   `| Excused | Voided -> None`.
         // Why an option? So Array.choose can KEEP the cash amounts and DROP
         //   everything else in one step (see cashInDrawer below).
@@ -351,7 +351,7 @@ let main argv =
 //              | Voucher _
 //              | Unpaid
 //              | Refund _ -> None
-//            (Exactly the shape of lesson 27's `| Excused | Voided -> None`.)
+//            (Exactly the shape of lesson 11's `| Excused | Voided -> None`.)
 //
 //  5. dayTotal / cashInDrawer
 //     Use:   Array.skip 1,  Array.map Payment.fromString,

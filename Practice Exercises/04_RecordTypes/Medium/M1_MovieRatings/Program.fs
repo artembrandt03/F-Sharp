@@ -1,5 +1,5 @@
 // =====================================================================
-//  MEDIUM 1 - Movie Ratings                     (lesson 19 + lesson 17)
+//  MEDIUM 1 - Movie Ratings                     (lesson 7 + lesson 6)
 //  Type: WRITE THE FUNCTIONS - 5 functions, ~25 lines in total.
 // =====================================================================
 //
@@ -33,11 +33,11 @@
 //                                One pipeline, reusing 1, 2 and 4.
 //
 //  Hints:
-//    * Structure it like `Student.fromString` in lesson 19: split, pull
+//    * Structure it like `Student.fromString` in lesson 7: split, pull
 //      out the pieces with `let`, then build the record LAST.
 //    * Parse the ratings ONCE into a `let ratings = ...` and use it for
 //      the count, the average and the best.
-//    * `int "2010"` turns a string into an int (lesson 7 exercises).
+//    * `int "2010"` turns a string into an int (lesson 2 exercises).
 //
 //  New here:
 //    * `Array.sortByDescending (fun m -> m.Something)` is like

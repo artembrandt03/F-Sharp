@@ -1,5 +1,5 @@
 ﻿// =====================================================================
-//  MEDIUM 1 - Sales Report                                 (lesson 17)
+//  MEDIUM 1 - Sales Report                                 (lesson 6)
 //  Type: WRITE THE FUNCTIONS - 6 small functions, ~15 lines in total.
 // =====================================================================
 //
@@ -32,7 +32,7 @@
 //  Rules:
 //    * Reuse your own functions! e.g. yearTotal should call quarterSales,
 //      and summaryLine should call productLine, yearTotal, etc.
-//    * Use lesson 17's collection functions (Array.skip, Array.map,
+//    * Use lesson 6's collection functions (Array.skip, Array.map,
 //      Array.max, Array.average...), not loops.
 //
 //  New here:
@@ -40,7 +40,7 @@
 //    * `: float[]` after a function's parameters says what it RETURNS.
 //      It's only there so the placeholders compile. You can keep it.
 //
-//  `main` is already written: like lesson 17, it checks the file
+//  `main` is already written: like lesson 6, it checks the file
 //  argument, then prints your report.
 //
 //  Run:  dotnet run                        -> tests only

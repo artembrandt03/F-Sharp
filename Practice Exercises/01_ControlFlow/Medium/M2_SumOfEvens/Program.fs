@@ -1,5 +1,5 @@
 // =====================================================================
-//  MEDIUM 2 - Sum of Evens                            (lessons 11, 13)
+//  MEDIUM 2 - Sum of Evens                            (lessons 3, 4)
 //  Type: BUGGED + INCOMPLETE - fix the bugs AND finish the TODO.
 // =====================================================================
 //
@@ -56,7 +56,7 @@
 //     branch. A name made inside `if ... then` disappears when the branch
 //     ends, so the `for` loop below couldn't see them.
 //
-//     It's the same lesson 11 pattern as `let person = if ... then ... else ...`:
+//     It's the same lesson 3 pattern as `let person = if ... then ... else ...`:
 //     put the `let` OUTSIDE, and let the `if` produce the value.
 //
 //         WRONG:  if cond then let x = 1 else let x = 2

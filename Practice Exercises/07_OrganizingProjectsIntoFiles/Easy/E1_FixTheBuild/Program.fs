@@ -1,12 +1,12 @@
 open Weather
 
 // =====================================================================
-//  EASY 1 - Fix the Build                                  (lesson 25)
+//  EASY 1 - Fix the Build                                  (lesson 10)
 //  Type: BUGGED - the code itself is fine, but the PROJECT is wired up
 //        wrong, so it doesn't compile. 3 bugs.
 // =====================================================================
 //
-//  This project is split into 3 files, like StudentScores in lesson 25:
+//  This project is split into 3 files, like StudentScores in lesson 10:
 //
 //      Temperature.fs   namespace Weather, module Temperature
 //                         (toFahrenheit, describe)
@@ -51,7 +51,7 @@ open Weather
 // STYLE (optional): you put `open Weather` at the very top, above the
 //   header comment. That works fine. Most F# code puts the `open` lines
 //   right after any file header comment and before the code, the way
-//   lesson 25's Program.fs starts with its opens.
+//   lesson 10's Program.fs starts with its opens.
 //
 // NOTE: there are matching one-line notes in Report.fs and the .fsproj.
 
@@ -91,6 +91,6 @@ let main argv =
 //
 //  BUG 3 - Program.fs (this file)
 //    Report lives inside the Weather namespace now. Look at how
-//    lesson 25's Program.fs gets access to StudentScores' modules, and
+//    lesson 10's Program.fs gets access to StudentScores' modules, and
 //    add the same kind of line near the top of this file.
 // =====================================================================

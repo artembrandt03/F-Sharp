@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Guest List                                     (lesson 15)
+//  EASY 1 - Guest List                                     (lesson 5)
 //  Type: FILL IN THE BLANKS - about 4 lines of your own code.
 // =====================================================================
 //
@@ -73,7 +73,7 @@ let guestList (names: string[]) =
     //
     // For comparison, the same thing WITHOUT pipes reads inside-out:
     //     Array.filter isAllowed (Array.filter isValid names)
-    // The pipeline reads in the order things happen, which is why lesson 15
+    // The pipeline reads in the order things happen, which is why lesson 5
     //   prefers it.
 
 

@@ -1,5 +1,5 @@
 // =====================================================================
-//  MEDIUM 1 - FizzBuzz                                (lessons 11, 13)
+//  MEDIUM 1 - FizzBuzz                                (lessons 3, 4)
 //  Type: BUGGED - the code compiles, but it's wrong.
 // =====================================================================
 //
@@ -51,7 +51,7 @@ let countFizzBuzzes (upTo: int) =
     let mutable count = 0
     for i in 1..upTo do               // FIX 2: GOOD. In F# `a..b` already
                                       //   INCLUDES b, so no `-1` is needed.
-                                      //   (`0..argv.Length-1` in lesson 13 needed -1
+                                      //   (`0..argv.Length-1` in lesson 4 needed -1
                                       //   only because indexes stop at Length-1.)
         if fizzBuzz i = "FizzBuzz" then
             count <- count + 1

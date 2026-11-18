@@ -1,6 +1,6 @@
 # 03 - Collection Functions practice
 
-Based on lesson **17** (`Split`, `Array.skip`, `Array.map`, `Array.min` / `max` / `average` / `length`, `%0.1f`), plus `|>` from lesson 15.
+Based on lesson **6** (`Split`, `Array.skip`, `Array.map`, `Array.min` / `max` / `average` / `length`, `%0.1f`), plus `|>` from lesson 5.
 
 | Level  | Exercise         | Type                                   |
 |--------|------------------|----------------------------------------|

@@ -1,6 +1,6 @@
 # 06 - Arguments and Parameters practice
 
-Based on lesson **23**: currying / partial application (`singleQuote = quote '\''`), putting the "setting" parameters first and the data last, and adding type annotations so F# can find methods like `s.Split`.
+Based on lesson **9**: currying / partial application (`singleQuote = quote '\''`), putting the "setting" parameters first and the data last, and adding type annotations so F# can find methods like `s.Split`.
 
 | Level  | Exercise               | Type                                      |
 |--------|------------------------|-------------------------------------------|

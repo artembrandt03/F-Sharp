@@ -1,6 +1,6 @@
 # 08 - Discriminated Unions practice
 
-Based on lesson **27**: `type X = | A | B of float`, building values with case names, `match ... with` (including taking the data out of a case), stacking cases, `_`, the "incomplete pattern matches" warning, and DU + `option` + `Array.choose` (like `tryEffectiveScore`).
+Based on lesson **11**: `type X = | A | B of float`, building values with case names, `match ... with` (including taking the data out of a case), stacking cases, `_`, the "incomplete pattern matches" warning, and DU + `option` + `Array.choose` (like `tryEffectiveScore`).
 
 | Level  | Exercise        | Type                                              |
 |--------|-----------------|---------------------------------------------------|

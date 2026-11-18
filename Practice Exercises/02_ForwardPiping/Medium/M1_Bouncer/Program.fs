@@ -1,5 +1,5 @@
 // =====================================================================
-//  MEDIUM 1 - The Bouncer                      (lesson 15 + lesson 11)
+//  MEDIUM 1 - The Bouncer                      (lesson 5 + lesson 3)
 //  Type: FILL IN THE BLANKS - about 10 lines of your own code.
 // =====================================================================
 //
@@ -19,7 +19,7 @@
 //  Part D - `announcement name`: what the bouncer says at the door.
 //             * names longer than 6 letters -> "VIP: Christopher"
 //             * everyone else               -> "Guest: Bob"
-//           (Use `if ... then ... else` as an expression, lesson 11.)
+//           (Use `if ... then ... else` as an expression, lesson 3.)
 //
 //  `main` is already written: it pipes the real arguments through
 //  `admitted`, then announces each person with `Array.iter`.

@@ -1,6 +1,6 @@
 # 05 - Missing Data practice
 
-Based on lesson **21** (`Some` / `None`, `tryFromString`, `Option.defaultValue`, `Array.choose`, passing a function with its first argument filled in), plus records from lesson 19.
+Based on lesson **8** (`Some` / `None`, `tryFromString`, `Option.defaultValue`, `Array.choose`, passing a function with its first argument filled in), plus records from lesson 7.
 
 | Level  | Exercise       | Type                                        |
 |--------|----------------|---------------------------------------------|

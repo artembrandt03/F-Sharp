@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 1 - Bookshelf                                      (lesson 19)
+//  EASY 1 - Bookshelf                                      (lesson 7)
 //  Type: BUGGED - the code compiles, but it has 4 bugs.
 // =====================================================================
 //
@@ -20,7 +20,7 @@
 //  There are 4 bugs. Each fix is small: an index, a field name, or a
 //  swap. Don't change the tests.
 //
-//  Reminders from lesson 19:
+//  Reminders from lesson 7:
 //    * Records are built with  { Field1 = value; Field2 = value; ... }
 //    * Fields are read with a dot:  book.Title
 //    * `module Book` holds the functions that work on Book, so they're

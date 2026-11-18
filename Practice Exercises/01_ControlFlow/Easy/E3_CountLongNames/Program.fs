@@ -1,5 +1,5 @@
 // =====================================================================
-//  EASY 3 - Count the Long Names                      (lessons 11, 13)
+//  EASY 3 - Count the Long Names                      (lessons 3, 4)
 //  Type: INCOMPLETE - fill in the TODOs.
 // =====================================================================
 //
@@ -12,7 +12,7 @@
 //    countLongNames [||] 1                                        = 0
 //
 //  Rules:
-//    * Use a `for ... in ... do` loop (lesson 13).
+//    * Use a `for ... in ... do` loop (lesson 4).
 //    * Use a `let mutable` counter and update it with `<-`.
 //
 //  Hints:
@@ -58,7 +58,7 @@ let countLongNames (names: string[]) (minLength: int) =
 //         // 3: if the name is long enough, add 1 to the counter
 //         if name.Length >= minLength then
 //
-// PREVIEW (lessons 15 + 17, don't worry about it yet): later you'll be able
+// PREVIEW (lessons 5 + 6, don't worry about it yet): later you'll be able
 //   to write the same thing with no mutable and no loop:
 //
 // let countLongNames (names: string[]) (minLength: int) =

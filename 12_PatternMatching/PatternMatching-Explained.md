@@ -1,6 +1,6 @@
 # Pattern Matching, Explained
 
-A walkthrough of lesson 29's code: the small demo in `Before/PatternMatching`, and the real change in `After/StudentScores`.
+A walkthrough of lesson 12's code: the small demo in `Before/PatternMatching`, and the real change in `After/StudentScores`.
 
 ---
 
@@ -19,8 +19,8 @@ F# checks the patterns **from top to bottom**. At the **first one that fits**, i
 1. fills in the named blanks with the matching pieces of the value, and
 2. returns that branch's result.
 
-You already used this in lesson 27: `| Scored score -> Some score` means "does it look like `Scored <something>`? If so, call the something `score`".
-Lesson 29 shows that `match` works on **any** value, not just DUs: numbers, options, arrays and tuples.
+You already used this in lesson 11: `| Scored score -> Some score` means "does it look like `Scored <something>`? If so, call the something `score`".
+Lesson 12 shows that `match` works on **any** value, not just DUs: numbers, options, arrays and tuples.
 
 The rules, in plain words:
 
@@ -72,7 +72,7 @@ So matching on it works exactly like your own DUs (`Delivery`, `Payment`):
 - `Some v` means "is it a `Some` box? Call what's inside `v`".
 - `None` is the empty case, so there's nothing to name.
 
-`Option.defaultValue` from lesson 21 does this match for you behind the scenes.
+`Option.defaultValue` from lesson 8 does this match for you behind the scenes.
 `%O` prints any kind of value, which is why `describe` works for `Some 99` and `Some "abc"` alike.
 
 ### `Array.describe`: matching on the shape of an array
@@ -121,7 +121,7 @@ You don't need a `match` here because a pair always has exactly two parts, so on
 
 ## Part 2: the real change in StudentScores (`After/StudentScores/Student.fs`)
 
-### The problem with lesson 27's version
+### The problem with lesson 11's version
 
 ```fsharp
 let namePart i (s : string) =
@@ -180,7 +180,7 @@ It's handy for "this function returns a couple of named values". It's not someth
 **2. `raise (System.FormatException(...))`: stop with an error.**
 It's similar to `failwith`, but it raises a specific *kind* of error, here "the format is wrong".
 Every branch of a `match` must return the same type, but `raise` never returns: it stops the program. So F# accepts it in any branch.
-Lesson 31 covers this properly.
+Lesson 13 covers this properly.
 
 ### How `fromString` uses it
 
@@ -213,7 +213,7 @@ Both work. The difference:
 
 ## Part 3: what didn't change, but is the same idea
 
-`TestResult.tryEffectiveScore` from lesson 27 is still there unchanged, and now you can see it's the same thing:
+`TestResult.tryEffectiveScore` from lesson 11 is still there unchanged, and now you can see it's the same thing:
 
 ```fsharp
 match testResult with
