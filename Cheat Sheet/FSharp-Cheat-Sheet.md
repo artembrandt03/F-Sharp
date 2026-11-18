@@ -7,7 +7,7 @@ The early sections are quick reminders. From **06 Collection functions** on, eve
 
 The examples come from the course projects (StudentScores, Bricks, ConsolePrompt, ColorHistory), so you can open the real code next to this.
 
-To practise putting it all together, try a mock interview: [MockInterview_MiniCafe/TASK.md](MockInterview_MiniCafe/TASK.md) (30 minutes) or [MockInterview_TinyBank/TASK.md](MockInterview_TinyBank/TASK.md) (60 to 90 minutes).
+To practise putting it all together, try a mock interview: [MockInterview_MiniCafe/TASK.md](MockInterview_MiniCafe/TASK.md) (30 minutes, functional style), [MockInterview_VendingMachine/TASK.md](MockInterview_VendingMachine/TASK.md) (30 minutes, classes and interfaces) or [MockInterview_TinyBank/TASK.md](MockInterview_TinyBank/TASK.md) (60 to 90 minutes).
 
 ---
 
