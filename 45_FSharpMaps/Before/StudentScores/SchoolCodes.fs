@@ -22,6 +22,7 @@ module SchoolCodes =
                 let id = elements.[0] |> int 
                 let name = elements.[1]   
                 id, name)
-        |> dict
+        |> Map.ofSeq
+        |> Map.add 0 "(External)"
         // Or better still:
         //|> readOnlyDict
